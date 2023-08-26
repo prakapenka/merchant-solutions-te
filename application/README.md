@@ -1,13 +1,13 @@
 # Trading application
 
 Initial version of trading application.
-Contains only one [class](./src/main/java/Application.java) named Application:
+Contains only one [class](./src/main/java/Application.java) named SignalHandlerService:
 
 ```java
 /**
  * This is your team’s code and should be changed as you see fit.
  */
-class Application implements SignalHandler {
+class SignalHandlerService implements SignalHandler {
 
   public void handleSignal(int signal) {
     Algo algo = new Algo();

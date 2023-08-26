@@ -1,0 +1,5 @@
+setUp
+setAlgoParam 1,60
+performCalc
+submitToMarket
+doAlgo

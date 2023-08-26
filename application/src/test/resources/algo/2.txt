@@ -1,0 +1,4 @@
+reverse
+setAlgoParam 1,80
+submitToMarket
+doAlgo

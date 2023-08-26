@@ -1,0 +1,2 @@
+cancelTrades
+doAlgo

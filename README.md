@@ -34,3 +34,23 @@ The code should be a running service with a single http endpoint for receiving t
 will then be passed through the [SignalHandler](./algo-lib/src/main/java/SignalHandler.java)
 interface and onto your application.
 
+## Solution
+
+### Phase 0.
+
+Based on initial project structure, let's try to embed initial solution into a http web server, make
+sure that we could recieve signal and pass it to existed implementation without modifications.
+Here on this phase we will create rest web server that accepts integer and passes this integer into
+existed SignalHandlerService.
+
+At the end of phase 0, we will have rest service that accepts integer and invoke some algo
+functionality.
+
+Algo library provides code in default package. This is bad style, in java it is not possible to
+import classes from default package (default namespace).
+To solve that, we will use reflection to load classes and invoke methods indirectly.
+
+At the end of phase 0 we have http (spring boot) server that wraps initial Application
+implementation as it is and exposes it with GET endpoint.
+Also at phase 0 we create possible tests for algo invocations as far as simple tests for rest
+endpoint.
