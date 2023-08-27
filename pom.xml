@@ -6,18 +6,34 @@
 
   <groupId>com.example</groupId>
   <modelVersion>4.0.0</modelVersion>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <groupId>org.springframework.boot</groupId>
+        <scope>import</scope>
+        <type>pom</type>
+        <version>3.1.3</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <packaging>pom</packaging>
+
   <modules>
     <module>algo-lib</module>
+    <module>domain</module>
+    <module>reflexive-algo-adapter</module>
     <module>application</module>
   </modules>
-  <packaging>pom</packaging>
+
+  <version>0.0.1-SNAPSHOT</version>
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 
-  <version>0.0.1-SNAPSHOT</version>
+    <org.apache.commons.lang3.version>3.13.0</org.apache.commons.lang3.version>
+  </properties>
 
 </project>

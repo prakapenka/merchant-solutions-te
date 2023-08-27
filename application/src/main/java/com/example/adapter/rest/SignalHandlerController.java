@@ -1,7 +1,8 @@
 package com.example.adapter.rest;
 
 
-import com.example.service.port.HandleSignalPort;
+import com.example.domain.HandleSignalPort;
+import com.example.domain.exception.AlgoInvocationException;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,8 @@ public class SignalHandlerController {
   private final HandleSignalPort handleSignalPort;
 
   @GetMapping("/{signal}")
-  public ResponseEntity<Void> handleSignal(@PathVariable @NotNull Integer signal) {
+  public ResponseEntity<Void> handleSignal(@PathVariable @NotNull Integer signal)
+      throws AlgoInvocationException {
     handleSignalPort.handleSignal(signal);
     return ResponseEntity.ok().build();
   }

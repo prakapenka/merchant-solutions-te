@@ -54,3 +54,60 @@ At the end of phase 0 we have http (spring boot) server that wraps initial Appli
 implementation as it is and exposes it with GET endpoint.
 Also at phase 0 we create possible tests for algo invocations as far as simple tests for rest
 endpoint.
+
+### Phase 1
+
+On this phase we will refactor original `Application` class that is used to call `Algo`
+functionally.
+Let's look how that code was implemented originally.
+For example, for `integer = 1` we have next sequence of calls:
+
+```java
+public void handleSignal(int signal){
+        Algo algo=new Algo();
+        switch(signal){
+        case 1:
+        algo.setUp();
+        algo.setAlgoParam(1,60);
+        algo.performCalc();
+        algo.submitToMarket();
+        break;
+        ...
+        algo.doAlgo();
+```
+
+i.e. for every input signal we:
+
+- create new instance of `Algo` object
+- then depending on integer value we call different sequence of methods
+- at the end calling `doAlgo()`
+
+We could imagine that for Algo we have next list of operations:
+
+- `doAlgo()`
+- `cancelTrades()`
+- `reverse()`
+- `submitToMarket()`
+- `performCalc()`
+- `setUp()`
+- `setAlgoParam(int param, int value)` which by itself takes 2 input parameters.
+
+...we assume we have Algo object more or less stable and we have finite amount of operations we have
+to perform on that object.
+Most of method call are of type void, while some accepts some input (2 integers)
+All methods does not have return type and every time we execute Algo we do create new instance of
+Algo.
+
+We will introduce new domain layer, where we do create abstract commands. We expect that for new
+integers we could have different command sequences.
+So that if we do not introduce new methods for Algo class and do not modifying existed method
+signatures, we could operates with abstract commands.
+In case Algo object will be modified, we also will have to modify our mappings layer.
+
+At the end of this stage we will have separate module to provide abstract domain commands, one
+separate module that
+provides implementation that bounds abstract commands to real Algo calls, and will add this module
+as dependency.
+
+We still have hardcoded command sequences for supported integers, which we will solve on nex stage.
+
