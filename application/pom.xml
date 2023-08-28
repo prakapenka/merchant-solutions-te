@@ -2,11 +2,20 @@
   xmlns="http://maven.apache.org/POM/4.0.0"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <dependencies>
+    <!-- algo adapter implementation -->
     <dependency>
       <artifactId>reflexive-algo-adapter</artifactId>
       <groupId>com.example</groupId>
       <version>${project.version}</version>
     </dependency>
+
+    <!-- commands provider implementation -->
+    <dependency>
+      <artifactId>signal-to-commands-adapter</artifactId>
+      <groupId>com.example</groupId>
+      <version>${project.version}</version>
+    </dependency>
+
     <dependency>
       <artifactId>spring-boot-starter-web</artifactId>
       <groupId>org.springframework.boot</groupId>

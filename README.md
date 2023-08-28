@@ -111,3 +111,47 @@ as dependency.
 
 We still have hardcoded command sequences for supported integers, which we will solve on nex stage.
 
+### Phase 2
+
+At this phase we still have hardcoded commands per integer, like it is defined in class
+
+```java
+
+@Service
+@RequiredArgsConstructor
+public class IntegerToAlgoService implements HandleSignalPort {
+  ...
+
+  List<Command> getCommandList(int i) {
+    return switch (i) {
+      case 1 -> List.of(
+              new VoidCommand(AlgoOperations.SETUP),
+              new TwoIntegersCommand(AlgoOperations.SET_ALGO_PARAM, 1, 60),
+              new VoidCommand(AlgoOperations.PERFORM_CALC),
+              new VoidCommand(AlgoOperations.SUBMIT_TO_MARKET),
+              new VoidCommand(AlgoOperations.DO_ALGO)
+      );
+  ...
+```
+
+At this stage we will refactor it and create a persistence layer with information about which
+commands corresponds to which integer values.
+
+We will create new module [signal-to-commands-adapter](./signal-to-commands-adapter/README.md) that
+would create sql schema and would provide functionality to store commands types.
+
+Commands payload could be generic and more complex, then initially 2 integers. So decision was made
+serialize command payload as json and store in database as a `VARCHAR`.
+
+Please check database
+schema [here](./signal-to-commands-adapter/src/main/resources/db/changelog/changes-0.sql).
+Please check details on how commands payload
+serialized/deserialized [here](./signal-to-commands-adapter/src/main/java/com/example/adapter/db/mapper/EntityToCommandMapper.java)
+
+On this phase we have solved problem to add new commands (assuming main `Algo` class will not be
+changed).
+We could add/change associated commands with every integer signal. Pay attention, to
+simulate `default` behaviour, when no assosiated signal found, we use `Long.MIN_VALUE as a default
+signal mapping. For the details please refer
+this [sql script](./signal-to-commands-adapter/src/main/resources/db/changelog/changes-1.sql) and
+this [adapter implementation](./signal-to-commands-adapter/src/main/java/com/example/adapter/db/DBCommandsAdapter.java).

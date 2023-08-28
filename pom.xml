@@ -22,6 +22,7 @@
   <modules>
     <module>algo-lib</module>
     <module>domain</module>
+    <module>signal-to-commands-adapter</module>
     <module>reflexive-algo-adapter</module>
     <module>application</module>
   </modules>
