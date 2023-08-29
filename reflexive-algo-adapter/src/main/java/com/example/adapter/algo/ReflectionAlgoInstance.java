@@ -3,6 +3,7 @@ package com.example.adapter.algo;
 import com.example.domain.AlgoInstance;
 import com.example.domain.AlgoOperations;
 import com.example.domain.Command;
+import com.example.domain.StringCommand;
 import com.example.domain.TwoIntegersCommand;
 import com.example.domain.VoidCommand;
 import java.lang.reflect.InvocationTargetException;
@@ -55,6 +56,9 @@ public class ReflectionAlgoInstance implements AlgoInstance {
       // generic way to pass parameters to method:
       Object[] arr = new Object[]{ti.getA(), ti.getB()};
       methodHandler.invoke(algo, arr);
+    } else if (command instanceof StringCommand) {
+      // we don't have method invocations that supports string input
+      throw new RuntimeException("String input not supported!");
     } else {
       throw new RuntimeException("Unsupported command: " + command);
     }
@@ -70,6 +74,7 @@ public class ReflectionAlgoInstance implements AlgoInstance {
       case PERFORM_CALC -> "performCalc";
       case SETUP -> "setUp";
       case SET_ALGO_PARAM -> "setAlgoParam";
+      case MAGIC -> throw new RuntimeException("Magic is not supported!");
     };
   }
 }

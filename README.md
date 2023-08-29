@@ -155,3 +155,21 @@ simulate `default` behaviour, when no assosiated signal found, we use `Long.MIN_
 signal mapping. For the details please refer
 this [sql script](./signal-to-commands-adapter/src/main/resources/db/changelog/changes-1.sql) and
 this [adapter implementation](./signal-to-commands-adapter/src/main/java/com/example/adapter/db/DBCommandsAdapter.java).
+
+### Phase 3
+
+Let's check how flexible final solution is. Imagine `Algo` class would like to introduce new method
+called `magic(String spell)`
+
+In this Phase 3 commit we will add all changes we need to do to support such feature.
+
+Next changes will be performed:
+
+- Update `AlgoOperations` enum to add new command type named `MAGIC`
+- Create new `StringCommand` since we have new `String` based input
+- Update ReflectionAlgoInstance to possibly support reflexive call to Algo (throws Exception for
+  now - we still don't have magic in algo).
+- Update persistence layer: update `EntityToCommandMapper` to support serialization for new `String`
+  payload and create new `StringContainer` for serialization.
+
+other changes is new tests added and update of this README.md file.

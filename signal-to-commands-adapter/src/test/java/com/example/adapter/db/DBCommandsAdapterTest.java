@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.example.adapter.AllTestConfiguration;
 import com.example.domain.AlgoOperations;
+import com.example.domain.StringCommand;
 import com.example.domain.TwoIntegersCommand;
 import com.example.domain.VoidCommand;
 import java.util.List;
@@ -49,5 +50,22 @@ public class DBCommandsAdapterTest {
     var commandList = adapter.getCommandsForId(13);
     assertNotNull(commandList);
     assertEquals(2, commandList.size());
+  }
+
+  @Test
+  void testCanSupportMagic() {
+    adapter.addSignalAndCommands(113, List.of(
+        new StringCommand(AlgoOperations.MAGIC, "spell-113")
+    ));
+
+    var commandList = adapter.getCommandsForId(113);
+    assertNotNull(commandList);
+    assertEquals(1, commandList.size());
+
+    final var actualCommand = (StringCommand) commandList.get(0);
+    assertAll(
+        () -> assertEquals(AlgoOperations.MAGIC, actualCommand.getOperation()),
+        () -> assertEquals("spell-113", actualCommand.getSpell())
+    );
   }
 }

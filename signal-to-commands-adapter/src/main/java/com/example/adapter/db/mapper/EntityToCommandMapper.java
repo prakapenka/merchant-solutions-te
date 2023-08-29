@@ -3,6 +3,7 @@ package com.example.adapter.db.mapper;
 import com.example.adapter.db.entity.CommandEntity;
 import com.example.domain.AlgoOperations;
 import com.example.domain.Command;
+import com.example.domain.StringCommand;
 import com.example.domain.TwoIntegersCommand;
 import com.example.domain.VoidCommand;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,7 @@ public class EntityToCommandMapper {
 
   private final ObjectMapper om;
 
+  // this if/else approach could be refactored later
   public CommandEntity mapFromCommand(Command command) {
     var newEntity = new CommandEntity();
     newEntity.setOperation(command.getOperation());
@@ -23,6 +25,14 @@ public class EntityToCommandMapper {
       try {
         newEntity.setPayload(
             om.writeValueAsString(new TwoIntegerContainer(twi.getA(), twi.getB())));
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException("Unable to serialize payload for operation: "
+            + command.getOperation(), e);
+      }
+    } else if (command instanceof StringCommand sc) {
+      try {
+        newEntity.setPayload(
+            om.writeValueAsString(new StringContainer(sc.getSpell())));
       } catch (JsonProcessingException e) {
         throw new RuntimeException("Unable to serialize payload for operation: "
             + command.getOperation(), e);
@@ -41,6 +51,15 @@ public class EntityToCommandMapper {
       } catch (JsonProcessingException e) {
         throw new RuntimeException("unable to deserialize command payload: " + operation, e);
       }
+    } else if (operation == AlgoOperations.MAGIC) {
+      try {
+        var container = om.readValue(ce.getPayload(), StringContainer.class);
+        return new StringCommand(AlgoOperations.MAGIC,
+            container.stringValue());
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException("unable to deserialize command payload: " + operation, e);
+      }
+
     } else {
       return new VoidCommand(operation);
     }
